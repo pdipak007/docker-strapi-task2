@@ -8,7 +8,8 @@ That's it!
 ## How to Run
 ### Clone this repo:
 ``` hgit clone https://github.com/pdipak007/docker-strapi-task2.git
-cd docker-strapi-task2 ```
+cd docker-strapi-task2
+```
 
 Build and start the containers:
 
