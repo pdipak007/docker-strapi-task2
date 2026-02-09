@@ -1,18 +1,14 @@
-Strapi Docker Application
+# Strapi Docker Application
 This is a simple Strapi CMS application running in Docker containers.
-What's This?
+## What's This?
 I created this project to learn how to containerize a Strapi application using Docker. Strapi is a headless CMS that makes it easy to build APIs.
-What You Need
-
+## What You Need
 Docker Desktop installed on your computer
 That's it!
-
-How to Run
-
-Clone this repo:
-
-bashgit clone https://github.com/pdipak007/docker-strapi-task2.git
-cd docker-strapi-task2
+## How to Run
+### Clone this repo:
+``` hgit clone https://github.com/pdipak007/docker-strapi-task2.git
+cd docker-strapi-task2 ```
 
 Build and start the containers:
 
