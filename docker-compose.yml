@@ -1,0 +1,21 @@
+services:
+  strapi:
+    build: .
+    container_name: strapi-app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      HOST: 0.0.0.0
+      PORT: 1337
+      APP_KEYS: app-key-1,app-key-2,app-key-3,app-key-4
+      API_TOKEN_SALT: api-token-salt-example
+      ADMIN_JWT_SECRET: admin-jwt-secret-example
+      TRANSFER_TOKEN_SALT: transfer-token-salt-example
+      JWT_SECRET: jwt-secret-example
+    volumes:
+      - ./config:/app/config
+      - ./src:/app/src
+      - ./public/uploads:/app/public/uploads
+      - ./.tmp:/app/.tmp
+    ports:
+      - '1337:1337'
