@@ -1,326 +1,83 @@
-# Strapi Docker Application
+Strapi Docker Application
+This is a simple Strapi CMS application running in Docker containers.
+What's This?
+I created this project to learn how to containerize a Strapi application using Docker. Strapi is a headless CMS that makes it easy to build APIs.
+What You Need
 
-A fully containerized Strapi CMS application using Docker and Docker Compose, making it easy to deploy and run Strapi locally or in production.
+Docker Desktop installed on your computer
+That's it!
 
-## 📋 Table of Contents
+How to Run
 
-- [Overview](#overview)
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Docker Commands](#docker-commands)
-- [Project Structure](#project-structure)
-- [Environment Variables](#environment-variables)
-- [Troubleshooting](#troubleshooting)
-- [Technologies Used](#technologies-used)
+Clone this repo:
 
-## 🎯 Overview
+bashgit clone https://github.com/pdipak007/docker-strapi-task2.git
+cd docker-strapi-task2
 
-This project demonstrates how to containerize a Strapi application using Docker. Strapi is a leading open-source headless CMS that's highly customizable and developer-friendly.
+Build and start the containers:
 
-## ✨ Features
-
-- 🐳 **Fully Dockerized** - Complete Docker setup with multi-stage builds
-- 🚀 **Easy Setup** - Get started with just a few commands
-- 💾 **SQLite Database** - Lightweight database included (easily switchable to PostgreSQL)
-- 🔄 **Hot Reload** - Development mode with live code reloading
-- 📦 **Volume Mapping** - Persistent data storage
-- 🔒 **Secure** - Environment variables for sensitive configuration
-
-## 📦 Prerequisites
-
-Before you begin, ensure you have the following installed:
-
-- **Docker Desktop** (version 20.10 or higher)
-  - [Download for Mac](https://www.docker.com/products/docker-desktop/)
-  - [Download for Windows](https://www.docker.com/products/docker-desktop/)
-  - [Download for Linux](https://docs.docker.com/desktop/install/linux-install/)
-- **Git** (for cloning the repository)
-- **Node.js 20+** (only if running without Docker)
-
-## 🚀 Installation
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/YOUR-USERNAME/strapi-docker-app.git
-cd strapi-docker-app
-```
-
-### 2. Build the Docker Image
-
-```bash
-docker-compose build
-```
-
-This will:
-- Download the Node.js 20 Alpine base image
-- Install all Strapi dependencies
-- Build the Strapi admin panel
-- Create an optimized Docker image
-
-### 3. Start the Application
-
-```bash
+bashdocker-compose build
 docker-compose up -d
-```
 
-The `-d` flag runs containers in detached mode (in the background).
+Open your browser and go to:
 
-### 4. Access Strapi
+http://localhost:1337/admin
 
-Open your browser and navigate to:
+Create your admin account when you first visit.
 
-**Admin Panel:** [http://localhost:1337/admin](http://localhost:1337/admin)
+Screenshots
 
-On first launch, you'll be prompted to create your first administrator account.
+Useful Commands
+Stop the application:
+bashdocker-compose down
+View logs:
+bashdocker-compose logs -f strapi
+Restart:
+bashdocker-compose restart
+What's Inside
 
-## 💻 Usage
+Dockerfile - Instructions to build the Docker image
+docker-compose.yml - Configuration for running the container
+.dockerignore - Files to exclude from the Docker build
+src/ - Strapi application code
+config/ - Configuration files
 
-### Creating Your First Admin User
+How It Works
+The Docker container:
 
-1. Go to [http://localhost:1337/admin](http://localhost:1337/admin)
-2. Fill in the admin registration form:
-   - First Name
-   - Last Name
-   - Email
-   - Password
-3. Click "Let's start"
+Uses Node.js 20 on Alpine Linux (lightweight)
+Installs all Strapi dependencies
+Runs Strapi in development mode
+Uses SQLite database (stored in .tmp folder)
+Exposes port 1337
 
-### Creating Content Types
+Database
+Currently using SQLite for simplicity. All data is stored in the .tmp folder which is mounted as a volume, so your data persists even when you restart the container.
+Notes
 
-1. Navigate to **Content-Type Builder** in the admin panel
-2. Click **"Create new collection type"**
-3. Define your content structure
-4. Save and the server will automatically restart
+This is configured for development. For production, you'd want to use a proper database like PostgreSQL.
+The secrets in docker-compose.yml are just examples. In production, use secure random strings.
+First time running takes a few minutes to build everything.
 
-### Accessing the API
+Problems?
+Container won't start?
 
-Once you create content types and add data:
+Make sure Docker Desktop is running
+Check if port 1337 is already in use
 
-**API Endpoint:** `http://localhost:1337/api/[collection-name]`
+Can't access the admin?
 
-Example: `http://localhost:1337/api/articles`
+Wait a minute for Strapi to fully start
+Check logs: docker-compose logs -f strapi
 
-## 🐳 Docker Commands
-
-### Start the Application
-
-```bash
+Want to start fresh?
+bashdocker-compose down -v
 docker-compose up -d
-```
+(Warning: This deletes all your data)
+Tech Stack
 
-### Stop the Application
+Strapi v5.35.0
+Node.js v20
+Docker
+SQLite
 
-```bash
-docker-compose down
-```
-
-### View Logs
-
-```bash
-# Follow logs in real-time
-docker-compose logs -f strapi
-
-# View last 100 lines
-docker-compose logs --tail=100 strapi
-```
-
-### Restart the Application
-
-```bash
-docker-compose restart
-```
-
-### Rebuild After Code Changes
-
-```bash
-docker-compose up -d --build
-```
-
-### Stop and Remove Everything (including volumes)
-
-```bash
-docker-compose down -v
-```
-
-**⚠️ Warning:** This will delete all your data!
-
-### Access Container Shell
-
-```bash
-docker-compose exec strapi sh
-```
-
-### Check Running Containers
-
-```bash
-docker ps
-```
-
-## 📁 Project Structure
-
-```
-strapi-docker-app/
-├── config/              # Strapi configuration files
-├── src/                 # Source code
-│   ├── api/            # API endpoints
-│   ├── components/     # Reusable components
-│   └── extensions/     # Plugin extensions
-├── public/             # Public assets
-│   └── uploads/        # Uploaded files
-├── .tmp/               # Temporary files and SQLite database
-├── node_modules/       # Dependencies (not in git)
-├── Dockerfile          # Docker image configuration
-├── docker-compose.yml  # Docker Compose configuration
-├── .dockerignore       # Files to exclude from Docker build
-├── package.json        # NPM dependencies
-└── README.md          # This file
-```
-
-## 🔐 Environment Variables
-
-The application uses the following environment variables (configured in `docker-compose.yml`):
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `NODE_ENV` | Environment mode | `development` |
-| `HOST` | Host address | `0.0.0.0` |
-| `PORT` | Port number | `1337` |
-| `APP_KEYS` | Application keys for security | Generated |
-| `API_TOKEN_SALT` | Salt for API tokens | Generated |
-| `ADMIN_JWT_SECRET` | JWT secret for admin | Generated |
-| `TRANSFER_TOKEN_SALT` | Salt for transfer tokens | Generated |
-| `JWT_SECRET` | General JWT secret | Generated |
-
-**⚠️ Important:** For production, generate secure random strings for all secrets!
-
-### Generate Secure Secrets
-
-```bash
-# On Mac/Linux
-openssl rand -base64 32
-```
-
-## 🐛 Troubleshooting
-
-### Port 1337 Already in Use
-
-```bash
-# Find process using port 1337
-lsof -i :1337
-
-# Kill the process (replace PID with actual process ID)
-kill -9 PID
-```
-
-### Docker Build Fails
-
-```bash
-# Clean Docker cache and rebuild
-docker-compose down
-docker system prune -a
-docker-compose build --no-cache
-docker-compose up -d
-```
-
-### Container Keeps Restarting
-
-```bash
-# Check logs for errors
-docker-compose logs strapi
-
-# Common issues:
-# - Missing environment variables
-# - Port conflicts
-# - Insufficient memory
-```
-
-### Permission Issues
-
-```bash
-# Fix ownership of files (Mac/Linux)
-sudo chown -R $(whoami) .
-```
-
-### Database Connection Issues
-
-The default setup uses SQLite. If you need PostgreSQL:
-
-1. Update `docker-compose.yml` to include PostgreSQL service
-2. Add database environment variables
-3. Rebuild: `docker-compose up -d --build`
-
-## 🛠️ Technologies Used
-
-- **[Strapi](https://strapi.io/)** - Headless CMS (v5.35.0)
-- **[Node.js](https://nodejs.org/)** - JavaScript runtime (v20)
-- **[Docker](https://www.docker.com/)** - Containerization platform
-- **[Docker Compose](https://docs.docker.com/compose/)** - Multi-container orchestration
-- **[SQLite](https://www.sqlite.org/)** - Embedded database
-- **[Alpine Linux](https://alpinelinux.org/)** - Lightweight container OS
-
-## 📝 Development
-
-### Running Without Docker
-
-If you prefer to run without Docker:
-
-```bash
-# Install dependencies
-npm install
-
-# Run in development mode
-npm run develop
-
-# Build for production
-npm run build
-
-# Start production server
-npm start
-```
-
-### Making Changes
-
-1. Modify files in `src/`, `config/`, etc.
-2. Strapi will auto-reload in development mode
-3. For Docker, rebuild if you change dependencies:
-   ```bash
-   docker-compose up -d --build
-   ```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 🙏 Acknowledgments
-
-- [Strapi Team](https://strapi.io/) for the amazing CMS
-- [Docker](https://www.docker.com/) for containerization technology
-- Open source community
-
-## 📞 Support
-
-If you encounter any issues or have questions:
-
-1. Check the [Troubleshooting](#troubleshooting) section
-2. Review [Strapi Documentation](https://docs.strapi.io/)
-3. Check [Docker Documentation](https://docs.docker.com/)
-4. Open an issue in this repository
-
----
-
-**Made with ❤️ using Strapi and Docker**
-
-🌟 If you find this project helpful, please give it a star!
